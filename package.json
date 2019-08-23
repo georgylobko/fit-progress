@@ -1,0 +1,46 @@
+{
+  "name": "fit-progress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/server.ts",
+  "scripts": {
+    "start": "node --inspect=5858 -r ts-node/register ./src/server.ts",
+    "start:watch": "nodemon",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgylobko/fit-progress.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgylobko/fit-progress/issues"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "npm start",
+    "ext": "ts"
+  },
+  "homepage": "https://github.com/georgylobko/fit-progress#readme",
+  "devDependencies": {
+    "@types/koa": "^2.0.49",
+    "@types/node": "^12.7.2",
+    "eslint": "^6.2.1",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "koa": "^2.8.1"
+  }
+}
