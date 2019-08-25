@@ -37,6 +37,7 @@
     "@types/koa-bodyparser": "4.3.0",
     "@types/koa-router": "7.0.42",
     "@types/node": "12.7.2",
+    "@types/sequelize": "4.28.4",
     "eslint": "6.2.1",
     "eslint-plugin-import": "2.18.2",
     "nodemon": "1.19.1",
@@ -47,6 +48,8 @@
     "config": "3.2.2",
     "koa": "2.8.1",
     "koa-bodyparser": "4.2.1",
-    "koa-router": "7.4.0"
+    "koa-router": "7.4.0",
+    "mysql2": "^1.6.5",
+    "sequelize": "5.16.0"
   }
 }
