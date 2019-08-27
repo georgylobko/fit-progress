@@ -1,12 +1,13 @@
 import Koa from 'koa';
-import { Sequelize } from 'sequelize';
-import config from 'config';
+import bodyParser from 'koa-bodyparser';
 
-const sequelize = new Sequelize(config.get('db.database'), config.get('db.username'), config.get('db.password'), {
-    host: config.get('db.host'),
-    port: config.get('db.port'),
-    dialect: 'mysql'
-});
+import sequelize from './db';
+import errorHandler from './middlewares/errorHandler';
+
+import exercisesRouter from './routes/exercises';
+import muscleGroupsRouter from './routes/muscleGroups';
+
+const app = new Koa();
 
 sequelize
     .authenticate()
@@ -17,10 +18,12 @@ sequelize
         console.error('Unable to connect to the database:', err);
     });
 
-import exercisesRouter from './routes/exercises';
-
-const app = new Koa();
+app.use(bodyParser({
+    jsonLimit: '56kb'
+}));
+app.use(errorHandler);
 
 app.use(exercisesRouter.routes());
+app.use(muscleGroupsRouter.routes());
 
 export default app;
