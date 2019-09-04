@@ -26,6 +26,12 @@ exercisesRouter
         const item = await Exercise.findByPk(exerciseId);
         await item.update(ctx.request.body);
         ctx.body = item;
+    })
+    .delete('/:exerciseId', async (ctx) => {
+        const { exerciseId } = ctx.params;
+        const item = await Exercise.findByPk(exerciseId);
+        await item.destroy();
+        ctx.body = 'ok';
     });
 
 export default exercisesRouter;
