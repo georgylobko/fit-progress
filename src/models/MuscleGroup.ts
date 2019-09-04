@@ -11,7 +11,7 @@ MuscleGroup.init({
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
-        primaryKey: true,
+        primaryKey: true
     },
     name: {
         type: new DataTypes.STRING(128),

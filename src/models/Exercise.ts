@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../db';
+import MuscleGroup from './MuscleGroup';
 
 class Exercise extends Model {
     public id!: number;
@@ -19,10 +20,15 @@ Exercise.init({
     name: {
         type: new DataTypes.STRING(128),
         allowNull: false,
+    },
+    muscleGroupId: {
+        type: DataTypes.INTEGER
     }
 }, {
     sequelize,
     tableName: 'exercises',
 });
+
+Exercise.belongsTo(MuscleGroup, { foreignKey: 'muscleGroupId', as: 'muscleGroup' });
 
 export default Exercise;
