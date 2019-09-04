@@ -20,6 +20,12 @@ exercisesRouter
     .post('/', async (ctx) => {
         const newItem = await Exercise.create(ctx.request.body);
         ctx.body = newItem;
+    })
+    .put('/:exerciseId', async (ctx) => {
+        const { exerciseId } = ctx.params;
+        const item = await Exercise.findByPk(exerciseId);
+        await item.update(ctx.request.body);
+        ctx.body = item;
     });
 
 export default exercisesRouter;
