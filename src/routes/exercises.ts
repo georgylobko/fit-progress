@@ -8,7 +8,7 @@ const exercisesRouter = new Router({
 
 exercisesRouter
     .get('/', async (ctx) => {
-        ctx.body = await Exercise.findAll();
+        ctx.body = await Exercise.findAll({ include: [{ model: MuscleGroup, as: 'muscle_group' }] });
     })
     .get('/:exerciseId', async (ctx) => {
         const { exerciseId } = ctx.params;

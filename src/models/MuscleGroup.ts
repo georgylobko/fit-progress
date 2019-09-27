@@ -26,6 +26,4 @@ MuscleGroup.init({
     tableName: 'muscle_groups'
 });
 
-MuscleGroup.hasMany(Exercise, { foreignKey: 'muscle_group_id' });
-
 export default MuscleGroup;

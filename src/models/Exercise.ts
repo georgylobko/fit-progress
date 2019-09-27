@@ -28,7 +28,10 @@ Exercise.init({
     timestamps: false,
     underscored: true,
     sequelize,
-    tableName: 'exercises',
+    tableName: 'exercises'
 });
+
+Exercise.belongsTo(MuscleGroup, { foreignKey: 'muscle_group_id', as: 'muscle_group' });
+MuscleGroup.hasMany(Exercise, { foreignKey: 'muscle_group_id' });
 
 export default Exercise;
