@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import Exercise from '../models/Exercise';
+import MuscleGroup from '../models/MuscleGroup';
 
 const exercisesRouter = new Router({
     prefix: '/exercises'
@@ -7,9 +8,7 @@ const exercisesRouter = new Router({
 
 exercisesRouter
     .get('/', async (ctx) => {
-        ctx.body = await Exercise.findAll({
-            include: ['muscleGroup']
-        });
+        ctx.body = await Exercise.findAll();
     })
     .get('/:exerciseId', async (ctx) => {
         const { exerciseId } = ctx.params;
@@ -18,6 +17,7 @@ exercisesRouter
         ctx.body = item;
     })
     .post('/', async (ctx) => {
+        console.log(ctx.request.body);
         const newItem = await Exercise.create(ctx.request.body);
         ctx.body = newItem;
     })

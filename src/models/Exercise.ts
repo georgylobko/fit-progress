@@ -4,31 +4,31 @@ import { sequelize } from '../db';
 import MuscleGroup from './MuscleGroup';
 
 class Exercise extends Model {
-    public id!: number;
-    public name!: string;
-
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    public exercise_id!: number;
+    public muscle_group_id: number;
+    public name: string;
+    public description: string;
 }
 
 Exercise.init({
-    id: {
+    exercise_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
     },
     name: {
-        type: new DataTypes.STRING(128),
+        type: new DataTypes.STRING(255),
         allowNull: false,
     },
-    muscleGroupId: {
-        type: DataTypes.INTEGER
+    description: {
+        type: new DataTypes.STRING(255),
+        allowNull: true
     }
 }, {
+    timestamps: false,
+    underscored: true,
     sequelize,
     tableName: 'exercises',
 });
-
-Exercise.belongsTo(MuscleGroup, { foreignKey: 'muscleGroupId', as: 'muscleGroup' });
 
 export default Exercise;

@@ -6,7 +6,7 @@ module.exports = {
   db: {
     host: 'localhost',
     port: 3306,
-    database: 'fit_progress',
+    database: 'gym_notes',
     username: 'root',
     password: 'root'
   }
