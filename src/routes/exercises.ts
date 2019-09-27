@@ -17,9 +17,7 @@ exercisesRouter
         ctx.body = item;
     })
     .post('/', async (ctx) => {
-        console.log(ctx.request.body);
-        const newItem = await Exercise.create(ctx.request.body);
-        ctx.body = newItem;
+        ctx.body = await Exercise.create(ctx.request.body);
     })
     .put('/:exerciseId', async (ctx) => {
         const { exerciseId } = ctx.params;
