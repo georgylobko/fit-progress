@@ -35,7 +35,4 @@ Workout.init({
     tableName: 'workouts'
 });
 
-Workout.hasMany(WorkoutSet, { foreignKey: 'workout_id', as: 'sets' });
-WorkoutSet.hasMany(Workout, { foreignKey: 'workout_id' });
-
 export default Workout;
