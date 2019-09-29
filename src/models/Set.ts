@@ -25,13 +25,14 @@ Set.init({
         allowNull: false
     }
 }, {
+    timestamps: false,
     underscored: true,
     sequelize,
     tableName: 'sets'
 });
 
 Set.belongsTo(Exercise, { foreignKey: 'exercise_id', as: 'exercises' });
-Exercise.hasMany(Exercise, { foreignKey: 'set_id' });
+Exercise.hasMany(Set, { foreignKey: 'set_id' });
 
 WorkoutSet.hasMany(Set, { foreignKey: 'set_id' });
 

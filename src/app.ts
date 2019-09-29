@@ -7,6 +7,7 @@ import errorHandler from './middlewares/errorHandler';
 import exercisesRouter from './routes/exercises';
 import muscleGroupsRouter from './routes/muscleGroups';
 import workoutRouter from './routes/workouts';
+import setsRouter from './routes/sets';
 
 const app = new Koa();
 
@@ -27,5 +28,6 @@ app.use(errorHandler);
 app.use(exercisesRouter.routes());
 app.use(muscleGroupsRouter.routes());
 app.use(workoutRouter.routes());
+app.use(setsRouter.routes());
 
 export default app;
