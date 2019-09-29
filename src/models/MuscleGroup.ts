@@ -1,7 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../db';
-import Exercise from './Exercise';
 
 class MuscleGroup extends Model {
     public muscle_group_id!: number;

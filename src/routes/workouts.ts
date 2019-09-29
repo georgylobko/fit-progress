@@ -1,6 +1,8 @@
 import Router from 'koa-router';
-import Exercise from '../models/Exercise';
+
 import Workout from '../models/Workout';
+import WorkoutSet from '../models/WorkoutSet';
+import Set from '../models/Set';
 
 const workoutsRouter = new Router({
     prefix: '/workouts'
@@ -12,7 +14,10 @@ workoutsRouter
     })
     .get('/:workoutId', async (ctx) => {
         const { workoutId } = ctx.params;
-        const item = await Workout.findByPk(workoutId);
+        const item = await Workout.findByPk(workoutId, { include: [{
+                model: WorkoutSet,
+                as: 'sets'
+            }] });
         if (!item) ctx.throw(404);
         ctx.body = item;
     })
