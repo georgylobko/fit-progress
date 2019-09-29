@@ -1,6 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../db';
+import Exercise from './Exercise';
+import WorkoutSet from './WorkoutSet';
 
 class Set extends Model {
     set_id!: number;
@@ -26,6 +28,11 @@ Set.init({
     underscored: true,
     sequelize,
     tableName: 'sets'
-})
+});
+
+Set.belongsTo(Exercise, { foreignKey: 'exercise_id', as: 'exercises' });
+Exercise.hasMany(Exercise, { foreignKey: 'set_id' });
+
+WorkoutSet.hasMany(Set, { foreignKey: 'set_id' });
 
 export default Set;

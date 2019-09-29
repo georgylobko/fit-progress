@@ -1,12 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../db';
+import WorkoutSet from './WorkoutSet';
 
 class Workout extends Model {
     public workout_id!: number;
     name: string;
     description: string;
-    date: Date;
+    created_at: string;
+    updated_at: string;
 }
 
 
@@ -22,12 +24,17 @@ Workout.init({
     },
     description: {
         type: new DataTypes.STRING(255),
-        allowNull: false
-    }
+        allowNull: true
+    },
+    createdAt: { type: DataTypes.DATE, field: 'created_at' },
+    updatedAt: { type: DataTypes.DATE, field: 'updated_at' },
 }, {
+    timestamps: true,
     underscored: true,
     sequelize,
     tableName: 'workouts'
 });
+
+WorkoutSet.hasMany(Workout, { foreignKey: 'workout_id' });
 
 export default Workout;
