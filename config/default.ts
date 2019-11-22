@@ -4,10 +4,11 @@ module.exports = {
     port: 3000,
   },
   db: {
-    host: 'localhost',
-    port: 3306,
-    database: 'gym_notes',
-    username: 'root',
-    password: 'root'
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT,
+    database: process.env.MYSQL_DATABASE,
+    username: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD
   }
 };
+
