@@ -1,6 +1,5 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import config from 'config';
 
 import sequelize from './db';
 import errorHandler from './middlewares/errorHandler';
@@ -21,10 +20,7 @@ sequelize
         console.error('Unable to connect to the database:', err);
     });
 
-sequelize.query(`CREATE DATABASE IF NOT EXISTS "${config.get('db.database')}"`)
-    .then(() => console.log('Database created!'));
-
-sequelize.sync({ force: true })
+sequelize.sync()
     .then(() => {
         console.log('Tables created!')
     });

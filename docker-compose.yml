@@ -5,6 +5,10 @@ services:
     restart: always
     ports:
       - "3306:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+#    command: mysqld --init-file="/tmp/database/schema.sql"
+#    command: echo "hello oooo"
   api:
     build:
       dockerfile: Dockerfile.dev
