@@ -11,19 +11,21 @@ import setsRouter from './routes/sets';
 
 const app = new Koa();
 
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+setTimeout(() => {
+    sequelize
+        .authenticate()
+        .then(() => {
+            console.log('Connection has been established successfully.');
+        })
+        .catch(err => {
+            console.error('Unable to connect to the database:', err);
+        });
 
-sequelize.sync()
-    .then(() => {
-        console.log('Tables created!')
-    });
+    sequelize.sync()
+        .then(() => {
+            console.log('Tables created!')
+        });
+}, 5000);
 
 app.use(bodyParser({
     jsonLimit: '56kb'
