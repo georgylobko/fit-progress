@@ -2,14 +2,11 @@ version: '3'
 services:
   api:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./
     restart: always
     ports:
       - "3000:3000"
-    volumes:
-      - /app/node_modules
-      - ./:/app
     environment:
       - MYSQL_HOST=db
       - MYSQL_PORT=3306
@@ -24,7 +21,7 @@ services:
     ports:
       - "3306:3306"
     expose:
-      - "3306"
+      - '3306'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
