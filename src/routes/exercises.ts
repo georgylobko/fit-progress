@@ -1,6 +1,6 @@
 import Router from 'koa-router';
-import Exercise from '../models/Exercise';
-import MuscleGroup from '../models/MuscleGroup';
+
+import Exercise from '../entity/Exercise';
 
 const exercisesRouter = new Router({
     prefix: '/exercises'
@@ -8,28 +8,27 @@ const exercisesRouter = new Router({
 
 exercisesRouter
     .get('/', async (ctx) => {
-        ctx.body = await Exercise.findAll({ include: [{ model: MuscleGroup, as: 'muscle_group' }] });
+        ctx.body = await Exercise.find({ relations: ['muscleGroup'] });
     })
-    .get('/:exerciseId', async (ctx) => {
-        const { exerciseId } = ctx.params;
-        const item = await Exercise.findByPk(exerciseId);
+    .get('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        const item = await Exercise.findOne(id);
         if (!item) ctx.throw(404);
         ctx.body = item;
     })
     .post('/', async (ctx) => {
-        ctx.body = await Exercise.create(ctx.request.body);
+        const muscleGroup = await Exercise.create(ctx.request.body);
+        ctx.body = await Exercise.save(muscleGroup);
     })
-    .put('/:exerciseId', async (ctx) => {
-        const { exerciseId } = ctx.params;
-        const item = await Exercise.findByPk(exerciseId);
-        await item.update(ctx.request.body);
-        ctx.body = item;
+    .put('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        const data = await Exercise.findOne(id);
+        Exercise.merge(data, ctx.request.body);
+        ctx.body = await Exercise.save(data);
     })
-    .delete('/:exerciseId', async (ctx) => {
-        const { exerciseId } = ctx.params;
-        const item = await Exercise.findByPk(exerciseId);
-        await item.destroy();
-        ctx.body = 'ok';
+    .delete('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        ctx.body = await Exercise.delete(id);
     });
 
 export default exercisesRouter;

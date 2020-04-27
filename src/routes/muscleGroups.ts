@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 
-import MuscleGroup from '../models/MuscleGroup';
+import MuscleGroup from '../entity/MuscleGroup';
 
 const muscleGroupsRouter = new Router({
     prefix: '/muscle_groups'
@@ -8,30 +8,27 @@ const muscleGroupsRouter = new Router({
 
 muscleGroupsRouter
     .get('/', async (ctx) => {
-        ctx.body = await MuscleGroup.findAll();
+        ctx.body = await MuscleGroup.find();
     })
-    .get('/:muscleGroupId', async (ctx) => {
-        const { muscleGroupId } = ctx.params;
-        const item = await MuscleGroup.findByPk(muscleGroupId);
+    .get('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        const item = await MuscleGroup.findOne(id);
         if (!item) ctx.throw(404);
         ctx.body = item;
     })
     .post('/', async (ctx) => {
-        const newItem = await MuscleGroup.create(ctx.request.body);
-        await newItem.save();
-        ctx.body = newItem;
+        const muscleGroup = await MuscleGroup.create(ctx.request.body);
+        ctx.body = await MuscleGroup.save(muscleGroup);
     })
-    .put('/:muscleGroupId', async (ctx) => {
-        const { muscleGroupId } = ctx.params;
-        const item = await MuscleGroup.findByPk(muscleGroupId);
-        await item.update(ctx.request.body);
-        ctx.body = item;
+    .put('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        const muscleGroup = await MuscleGroup.findOne(id);
+        MuscleGroup.merge(muscleGroup, ctx.request.body);
+        ctx.body = await MuscleGroup.save(muscleGroup);
     })
-    .delete('/:muscleGroupId', async (ctx) => {
-        const { muscleGroupId } = ctx.params;
-        const item = await MuscleGroup.findByPk(muscleGroupId);
-        await item.destroy();
-        ctx.body = 'ok';
+    .delete('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        ctx.body = await MuscleGroup.delete(id);
     });
 
 export default muscleGroupsRouter;

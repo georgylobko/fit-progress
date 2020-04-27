@@ -1,7 +1,6 @@
 import Router from 'koa-router';
 
-import Workout from '../models/Workout';
-import Set from '../models/Set';
+import Workout from '../entity/Workout';
 
 const workoutsRouter = new Router({
     prefix: '/workouts'
@@ -9,32 +8,27 @@ const workoutsRouter = new Router({
 
 workoutsRouter
     .get('/', async (ctx) => {
-        ctx.body = await Workout.findAll();
+        ctx.body = await Workout.find({ relations: ['muscleGroup', 'workoutSets', 'workoutSets.exercise'] });
     })
-    .get('/:workoutId', async (ctx) => {
-        const { workoutId } = ctx.params;
-        const item = await Workout.findByPk(workoutId, { include: [{
-                model: Set,
-                as: 'sets',
-                attributes: ['set_id', 'weight', 'reps']
-            }] });
+    .get('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        const item = await Workout.findOne(id, { relations: ['workoutSets', 'workoutSets.exercise'] });
         if (!item) ctx.throw(404);
         ctx.body = item;
     })
     .post('/', async (ctx) => {
-        ctx.body = await Workout.create(ctx.request.body);
+        const data = await Workout.create(ctx.request.body);
+        ctx.body = await Workout.save(data);
     })
-    .put('/:workoutId', async (ctx) => {
-        const { workoutId } = ctx.params;
-        const item = await Workout.findByPk(workoutId);
-        await item.update(ctx.request.body);
-        ctx.body = item;
+    .put('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        const data = await Workout.findOne(id);
+        Workout.merge(data, ctx.request.body);
+        ctx.body = await Workout.save(data);
     })
-    .delete('/:workoutId', async (ctx) => {
-        const { workoutId } = ctx.params;
-        const item = await Workout.findByPk(workoutId);
-        await item.destroy();
-        ctx.body = 'ok';
+    .delete('/:id', async (ctx) => {
+        const { id } = ctx.params;
+        ctx.body = await Workout.delete(id);
     });
 
 export default workoutsRouter;

@@ -1,27 +1,13 @@
 import { Context } from 'koa';
-import { ValidationError } from 'sequelize';
-
-interface IError {
-    field: string;
-    message: string;
-}
-
-const parseValidationErrors = (error: ValidationError): IError[] => {
-    console.dir(error);
-    return error.errors.map((error) => ({
-        field: error.path,
-        message: error.message
-    }));
-};
+import { QueryFailedError } from 'typeorm';
 
 const errorHandler = async (ctx: Context, next: Function) => {
     try {
         await next();
     } catch (error) {
-        if (error.name.startsWith('Sequelize')) {
+        if (error instanceof QueryFailedError) {
             ctx.status = 400;
-            console.dir(error);
-            ctx.body = error;
+            ctx.body = error.message;
         } else if (error.status) {
             ctx.body = error.message;
             ctx.status = error.status;

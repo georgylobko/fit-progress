@@ -1,39 +1,30 @@
 import Koa from 'koa';
+import { createConnection } from 'typeorm';
 import bodyParser from 'koa-bodyparser';
+import 'reflect-metadata';
 
-import sequelize from './db';
 import errorHandler from './middlewares/errorHandler';
 
 import exercisesRouter from './routes/exercises';
 import muscleGroupsRouter from './routes/muscleGroups';
 import workoutRouter from './routes/workouts';
-import setsRouter from './routes/sets';
+import workoutSetsRouter from './routes/workoutSet';
 
 const app = new Koa();
 
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-        process.exit(1);
-    });
+createConnection().then(async () => {
+    app.use(bodyParser({
+        jsonLimit: '56kb'
+    }));
+    app.use(errorHandler);
 
-sequelize.sync()
-    .then(() => {
-        console.log('Tables created!')
-    });
-
-app.use(bodyParser({
-    jsonLimit: '56kb'
-}));
-app.use(errorHandler);
-
-app.use(exercisesRouter.routes());
-app.use(muscleGroupsRouter.routes());
-app.use(workoutRouter.routes());
-app.use(setsRouter.routes());
+    app.use(exercisesRouter.routes());
+    app.use(muscleGroupsRouter.routes());
+    app.use(workoutRouter.routes());
+    app.use(workoutSetsRouter.routes());
+}).catch((error) => {
+    console.error(`Unable to connect to the database: ${error}`);
+    process.exit(1);
+});
 
 export default app;
